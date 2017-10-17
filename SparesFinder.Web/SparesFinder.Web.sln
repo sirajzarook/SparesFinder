@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SparesFinder.Web", "SparesFinder.Web\SparesFinder.Web.csproj", "{D6BC5D4D-6130-4887-8003-876284240551}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SparesFinder.Web.Tests", "SparesFinder.Web.Tests\SparesFinder.Web.Tests.csproj", "{50DD01BC-144C-4C9F-ADBE-ED8223DA2FD4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D6BC5D4D-6130-4887-8003-876284240551}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6BC5D4D-6130-4887-8003-876284240551}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6BC5D4D-6130-4887-8003-876284240551}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6BC5D4D-6130-4887-8003-876284240551}.Release|Any CPU.Build.0 = Release|Any CPU
+		{50DD01BC-144C-4C9F-ADBE-ED8223DA2FD4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50DD01BC-144C-4C9F-ADBE-ED8223DA2FD4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50DD01BC-144C-4C9F-ADBE-ED8223DA2FD4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50DD01BC-144C-4C9F-ADBE-ED8223DA2FD4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

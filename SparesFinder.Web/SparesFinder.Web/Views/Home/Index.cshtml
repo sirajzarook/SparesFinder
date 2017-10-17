@@ -1,0 +1,235 @@
+﻿@{
+    ViewBag.Title = "Year Sales Summary";
+}
+
+@section Scripts{
+    <script type="text/javascript">
+
+
+        //http://localhost:49269/api/EuroOffApi/getxml
+        $(document).ready(function () {
+       
+            $.ajax({
+                type: 'POST',
+                url: 'getSalesYear',
+                dataType: "json", //to parse string into JSON object,
+                success: function (data) {
+                    
+                    $('.detailsrow').remove();
+                    if (data) {
+                        var len = data.Data.length;
+                        var txt = "";
+                        if (len > 0) {
+                            for (var i = 0; i < len; i++) {
+
+                                txt += "<tr class=\"header_row\"><td><a href=\"#\" class=\"DetailLink\" data-id=" + data.Data[i].Year + ">Detail</a></td><td>"
+                                    + data.Data[i].Year + "</td><td class=\"shippeddays\">" + data.Data[i].ShippedInDays + "</td><td>£" + data.Data[i].Total + "</td></tr>";
+
+                            }
+                            if (txt != "") {
+                                $("#salesHeader").append(txt).removeClass("hidden");
+                                //if ($(this).text() == 'N') {
+                                //$(this).closest('.shippeddays').css('background-color', '#f00');
+                                //}
+                            }
+                        }
+                    }
+                    //$('#salesHeader td.shippeddays8').css('background-color', 'red');
+
+                    //jquery-selector-does-not-working-on-dynamic-content  
+                    //var abc = $('#salesHeader').find('.shippeddays8');
+                    //$(abc).each(function (e) {
+                    //    $(this).parent().css('background-color', 'red');
+                    //    //alert($(this).html());
+                    //});
+
+                    $('#salesHeader .shippeddays').each(function () {
+                        var shippedin = $(this).html()
+                        if (shippedin > 7)
+                            $(this).parent().css("background-color", "red");
+                        //alert($(this).parent().css("background-color");
+                    });
+
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert('error: ' + textStatus + ': ' + errorThrown);
+                }
+            });
+            return false;//suppress natural form submission
+        });
+
+        $(document).ready(function () {
+            //jquery-event-handler-does-not-working-on-dynamic-content without 
+            $('#salesHeader').on('click', '.DetailLink', function () {
+                var yearclicked = $(this).attr("data-id");;
+                //alert(catclicked);
+                //$("#salesDetails").closest(".detailsrowstatic").remove();
+                $('.divDetail').show();
+                $('.detailsrow').remove();
+                $.ajax({
+                    type: 'POST',
+                    url: 'getSalesSummaryOfYear/' + yearclicked,
+                    dataType: "json", //to parse string into JSON object,
+                    success: function (data) {
+
+                        //$("#salesDetails").closest(".detailsrow").remove();
+                        //$("#salesDetails").closest(".detailsrowstatic").remove();
+                        //$("#salesDetails").closest('tr').remove();
+                        if (data) {
+                            var len = data.Data.length;
+                            var txt = "";
+                            if (len > 0) {
+                                for (var i = 0; i < len; i++) {
+                                    //alert(data.Data[i].OrderDate);
+
+                                    txt += "<tr class=\"detailsrow\"><td>"
+                                        + data.Data[i].OrderDate + "</td><td>" + data.Data[i].ShipDate
+                                        + "</td><td>" + data.Data[i].SalesOrderID
+                                        + "</td><td>" + data.Data[i].ContactName
+                                        + "</td><td>£" + data.Data[i].Total
+                                        + "</td><td><button id=\"buttoncontact\" type=\"button\" data-contact='" + data.Data[i].ContactName + "'>></button></td></tr>";
+                                        //+ "</td><td><a href=\"#\" class=\"contactsearch\" data-contact='" + data.Data[i].ContactName + "'>></a></td></tr>";
+                                    
+
+
+                                }
+                                if (txt != "") {
+                                    $("#salesDetails").append(txt).removeClass(".detailsrow");
+                                }
+                            }
+                        }
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        alert('error: ' + textStatus + ': ' + errorThrown);
+                    }
+                });
+            });
+        });
+
+        //$(document).ready(function () {
+
+        //    $('.divDetail').hide();
+
+        //    $('#salesDetails').on('click', '.contactsearch', function () {
+        //        // Get the id from the link
+                
+        //        var contactName = $(this).attr("data-contact");
+        //        var url = "http://www.google.com/search?q=" + contactName;
+        //        if (contactName != '') {
+   
+        //            window.open(url, '_blank');
+        //        }
+        //    });
+        //});
+
+        $(document).ready(function () {
+
+            $('.divDetail').hide();
+
+          
+            $('#salesDetails').on('click', '#buttoncontact', function () {
+                // Get the id from the link
+
+                var contactName = $(this).attr("data-contact");
+                var url = "http://www.google.com/search?q=" + contactName;
+                if (contactName != '') {
+
+                    window.open(url, '_blank');
+                }
+            });
+        });
+
+        $(document).ready(function () {
+            $("#button").button().click(function () {
+                
+                var maxsales = $('#MaxSales').val();
+                $('.header_row').remove();
+                $('.detailsrow').remove();
+                $('.divDetail').hide();
+                //alert(maxsales);
+                $.ajax({
+                    type: 'POST',
+                    url: 'getSalesYearBelow/' + maxsales,
+                    dataType: "json", //to parse string into JSON object,
+                    success: function (data) {
+
+                        if (data) {
+                            var len = data.Data.length;
+                            var txt = "";
+                            if (len > 0) {
+                                for (var i = 0; i < len; i++) {
+
+                                    txt += "<tr class=\"header_row\"><td><a href=\"#\" class=\"DetailLink\" data-id=" + data.Data[i].Year + ">Detail</a></td><td>"
+                                        + data.Data[i].Year + "</td><td class=\"shippeddays\">" + data.Data[i].ShippedInDays + "</td><td>£" + data.Data[i].Total + "</td></tr>";
+
+                                }
+                                if (txt != "") {
+                                    $("#salesHeader").append(txt).removeClass("hidden");
+                                    //if ($(this).text() == 'N') {
+                                    //$(this).closest('.shippeddays').css('background-color', '#f00');
+                                    //}
+                                }
+                            }
+                        }
+
+                        //jquery-selector-does-not-working-on-dynamic-content  
+
+                        $('#salesHeader .shippeddays').each(function () {
+                            var shippedin = $(this).html()
+                            if (shippedin > 7)
+                                $(this).parent().css("background-color", "red");
+                            //alert($(this).parent().css("background-color");
+                        });
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        alert('error: ' + textStatus + ': ' + errorThrown);
+                    }
+                });
+                return false;//suppress natural form submission
+            });
+        });
+
+
+
+    </script>
+}
+    <br />
+
+
+
+    @*<label for="Student"> Maximum Total: </label> <input type="text" id="MaxSales"> <button id="button" type="button">Get Data</button>*@
+    <label for="Student"> Maximum Total: </label> <input id="MaxSales" type="number"> <button id="button" type="button">Get Data</button>
+    <br />
+    <div class="row">
+        <table class="table" id="salesHeader" border='1'>
+            <tr>
+                <th></th>
+                <th>Order Year</th>
+                <th>Time To Ship In Days</th>
+                <th>Total</th>
+            </tr>
+        </table>
+    </div>
+
+
+    <div class="row divDetail">
+        <h3>Sales Yearly Details</h3>
+        <table id="salesDetails" border='1'>
+            <tr>
+                <th>Order Date</th>
+                <th>Ship Date</th>
+                <th>Sales Order ID</th>
+                <th>Contact Name</th>
+                <th>Total</th>
+                <th></th>
+            </tr>
+            @*<tr class="detailsrowstatic">
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1</td>
+            </tr>*@
+        </table>
+    </div>
